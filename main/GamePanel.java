@@ -123,7 +123,7 @@ public class GamePanel extends JPanel implements Runnable {
 		    	
 		    }
 
-			if(score>25) {
+			if(score>625) {
 		    	g2.fillRect(plane3X, plane3Y, plane3Width, plane3Height);
 		    	
 		    }
@@ -244,7 +244,7 @@ public class GamePanel extends JPanel implements Runnable {
 				}
 			}
 
-			if(score>25){
+			if(score>625){
 				if(((birdX+50 >= plane3X) && (birdX <= plane3X)) && ((birdY+50 >= plane3Y) && (birdY <= plane3Y+plane3Height))){
 					gameIsOver = true;
 				}
@@ -273,7 +273,7 @@ public class GamePanel extends JPanel implements Runnable {
 			if(score>300){
 				plane2X -= plane2Speed;
 			}
-			if(score>25){
+			if(score>625){
 				plane3X -= plane3Speed;
 			}
 
@@ -284,6 +284,8 @@ public class GamePanel extends JPanel implements Runnable {
 				rand = randNum.nextInt((int) (maxHeight-180));
 				plane1Y = rand;
 				plane1InScreen = true;
+				tile.TileManager.rand = randNum.nextInt(5);
+				
 				
 			}	
 			

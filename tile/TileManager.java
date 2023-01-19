@@ -11,8 +11,10 @@ public class TileManager {
     
     GamePanel gp;
     Tile[] tile;
-    public static Tile[] cropDuster;
+    Tile[] cropDuster;
 
+    
+    public static int rand;
     
 
     public TileManager(GamePanel gp){
@@ -21,6 +23,8 @@ public class TileManager {
 
         tile = new Tile[10];
         cropDuster = new Tile[5];
+        Random randNum = new Random();
+        rand = randNum.nextInt(cropDuster.length);
 
         getTileImage();
     }
@@ -54,6 +58,8 @@ public class TileManager {
             e.printStackTrace();
 
         }
+        
+        
     }
     //method to draw background
     public void draw(Graphics2D g2) {
@@ -74,7 +80,8 @@ public class TileManager {
         }
 
 
-        g2.drawImage(cropDuster[2].image, gp.plane1X, gp.plane1Y, gp.plane1Width, gp.plane1Height, null);
+
+        g2.drawImage(cropDuster[rand].image, gp.plane1X, gp.plane1Y, gp.plane1Width, gp.plane1Height, null);
         
     }
 }
