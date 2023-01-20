@@ -12,6 +12,7 @@ public class ImageManager {
     GamePanel gp;
     Image[] Image;
     Image[] cropDuster;
+    Image[] Plane;
 
     
     public static int rand;
@@ -23,6 +24,7 @@ public class ImageManager {
 
         Image = new Image[10];
         cropDuster = new Image[5];
+        Plane = new Image[1];
         Random randNum = new Random();
         rand = randNum.nextInt(cropDuster.length);
 
@@ -53,6 +55,9 @@ public class ImageManager {
                 cropDuster[3].image = ImageIO.read(getClass().getResourceAsStream("/main/cropDuster4.png"));
                 cropDuster[4] = new Image();
                 cropDuster[4].image = ImageIO.read(getClass().getResourceAsStream("/main/cropDuster5.png"));
+
+                Plane[0] = new Image();
+                Plane[0].image = ImageIO.read(getClass().getResourceAsStream("/main/plane1.png"));
         }
         catch(IOException e) {
             e.printStackTrace();
@@ -80,8 +85,12 @@ public class ImageManager {
         }
 
 
-
+        
         g2.drawImage(cropDuster[rand].image, gp.plane1X, gp.plane1Y, gp.plane1Width, gp.plane1Height, null);
+        if(gp.score>300){
+            g2.drawImage(Plane[0].image, gp.plane2X, gp.plane2Y, gp.plane2Width, gp.plane2Height, null);
+        }
+        
         
     }
 }
