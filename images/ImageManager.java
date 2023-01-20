@@ -57,7 +57,7 @@ public class ImageManager {
                 cropDuster[4].image = ImageIO.read(getClass().getResourceAsStream("/main/cropDuster5.png"));
 
                 Plane[0] = new Image();
-                Plane[0].image = ImageIO.read(getClass().getResourceAsStream("/main/plane1.png"));
+                Plane[0].image = ImageIO.read(getClass().getResourceAsStream("/main/commercialPlane1.png"));
         }
         catch(IOException e) {
             e.printStackTrace();
