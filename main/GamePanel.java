@@ -79,6 +79,7 @@ public class GamePanel extends JPanel implements Runnable {
 	int plane3Width = 130;
 	Color birdColor;
 
+
 	int counter = 0;
 
 	public boolean plane1InScreen = false;
@@ -87,7 +88,7 @@ public class GamePanel extends JPanel implements Runnable {
 	boolean isOnTitleScreen = true;
 	public boolean firstAnim = true;
 	boolean dayTime = true;
-	
+	boolean isPowerUpIn = false;
 
 	
 	
@@ -229,23 +230,19 @@ public class GamePanel extends JPanel implements Runnable {
 				birdY += 12;
 			}
 
-			if(counter%20 == 0 && firstAnim == false){
-				birdColor = Color.yellow;
-			}
-
 			
-			if(((birdX+50 >= plane1X) && (birdX <= plane1X + plane1Width)) && ((birdY+50 >= plane1Y) && (birdY <= plane1Y+plane1Height))){
+			if(((birdX+40 >= plane1X) && (birdX <= plane1X + plane1Width)) && ((birdY+40 >= plane1Y) && (birdY <= plane1Y+plane1Height))){
 				gameIsOver = true;
 			}
 
 			if(score>300){
-				if(((birdX+50 >= plane2X) && (birdX <= plane2X + plane2Width)) && ((birdY+50 >= plane2Y) && (birdY <= plane2Y+plane2Height))){
+				if(((birdX+40 >= plane2X) && (birdX <= plane2X + plane2Width)) && ((birdY+40 >= plane2Y) && (birdY <= plane2Y+plane2Height))){
 					gameIsOver = true;
 				}
 			}
 
 			if(score>625){
-				if(((birdX+50 >= plane3X) && (birdX <= plane3X)) && ((birdY+50 >= plane3Y) && (birdY <= plane3Y+plane3Height))){
+				if(((birdX+40 >= plane3X) && (birdX <= plane3X)) && ((birdY+40 >= plane3Y) && (birdY <= plane3Y+plane3Height))){
 					gameIsOver = true;
 				}
 			}
@@ -276,6 +273,11 @@ public class GamePanel extends JPanel implements Runnable {
 			if(score>625){
 				plane3X -= plane3Speed;
 			}
+			if(score%100==0 && score!=0){
+				isPowerUpIn = true;
+			}
+
+
 
 			//
 			if(plane1X < plane1Width*-2) {
@@ -313,10 +315,6 @@ public class GamePanel extends JPanel implements Runnable {
 
 			if(counter % 90 == 0 && gameIsOver == false){
 				score += 20;
-			}
-
-			if(counter%2500==0 && counter!=0){
-				dayTime = !dayTime;
 			}
 
 			else if(gameIsOver == true && birdY > maxHeight + 50) {
