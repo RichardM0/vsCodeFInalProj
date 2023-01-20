@@ -14,7 +14,7 @@ import java.util.Random;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
-import tile.TileManager;
+import images.ImageManager;
 
 
 
@@ -35,7 +35,7 @@ public class GamePanel extends JPanel implements Runnable {
 	
 	int FPS = 60;
 	
-	TileManager tileM = new TileManager(this);
+	ImageManager tileM = new ImageManager(this);
 	KeyHandler keyH = new KeyHandler();
 	Thread gameThread;
 	Random randNum = new Random();
@@ -286,7 +286,7 @@ public class GamePanel extends JPanel implements Runnable {
 				rand = randNum.nextInt((int) (maxHeight-180));
 				plane1Y = rand;
 				plane1InScreen = true;
-				tile.TileManager.rand = randNum.nextInt(5);
+				images.ImageManager.rand = randNum.nextInt(5);
 				
 				
 			}	
