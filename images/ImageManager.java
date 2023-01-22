@@ -13,6 +13,7 @@ public class ImageManager {
     Image[] Image;
     Image[] cropDuster;
     Image[] Plane;
+    Image[] fighterJet;
 
     
     public static int rand;
@@ -25,6 +26,7 @@ public class ImageManager {
         Image = new Image[10];
         cropDuster = new Image[5];
         Plane = new Image[1];
+        fighterJet = new Image[1];
         Random randNum = new Random();
         rand = randNum.nextInt(cropDuster.length);
 
@@ -58,6 +60,12 @@ public class ImageManager {
 
                 Plane[0] = new Image();
                 Plane[0].image = ImageIO.read(getClass().getResourceAsStream("/main/commercialPlane1.png"));
+
+                fighterJet[0] = new Image();
+                fighterJet[0].image = ImageIO.read(getClass().getResourceAsStream("/main/fighterJet.png"));
+
+
+
         }
         catch(IOException e) {
             e.printStackTrace();
@@ -89,6 +97,10 @@ public class ImageManager {
         g2.drawImage(cropDuster[rand].image, gp.plane1X, gp.plane1Y, gp.plane1Width, gp.plane1Height, null);
         if(gp.score>300){
             g2.drawImage(Plane[0].image, gp.plane2X, gp.plane2Y, gp.plane2Width, gp.plane2Height, null);
+        }
+
+        if(gp.score>625){
+            g2.drawImage(fighterJet[0].image, gp.plane3X, gp.plane3Y, gp.plane3Width, gp.plane3Height, null);
         }
         
         

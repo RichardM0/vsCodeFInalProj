@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import images.ImageManager;
@@ -64,19 +65,19 @@ public class GamePanel extends JPanel implements Runnable {
 	double centerWidth = maxWidth/2;
 	double centerHeight = maxHeight/3;
 
-	int originalPlane2X = (int) (maxWidth-25);
-	public int plane2X = (int) (maxWidth+75);
+	int originalPlane2X = (int) (maxWidth+150);
+	public int plane2X = (int) (maxWidth+150);
 	public int plane2Y = rand2;
 	int plane2Speed = 18;
 	public int plane2Height = 135;
 	public int plane2Width = 250;
 	
-	int originalPlane3X = (int) (maxWidth-25);
-	int plane3X = (int) (maxWidth+75);
-	int plane3Y = rand3;
+	int originalPlane3X = (int) (maxWidth+150);
+	public int plane3X = (int) (maxWidth+150);
+	public int plane3Y = rand3;
 	int plane3Speed = 25;
-	int plane3Height = 90;
-	int plane3Width = 130;
+	public int plane3Height = 90;
+	public int plane3Width = 130;
 	Color birdColor;
 
 
@@ -89,6 +90,7 @@ public class GamePanel extends JPanel implements Runnable {
 	public boolean firstAnim = true;
 	boolean dayTime = true;
 	boolean isPowerUpIn = false;
+
 
 	
 	
@@ -112,19 +114,10 @@ public class GamePanel extends JPanel implements Runnable {
 			g2.drawImage(myBackgroundImg, 0, 0, (int)(maxWidth), (int)(maxHeight), this);
 			
 			tileM.draw(g2);
-			Font curFont = g2.getFont();
-			Font newFont = curFont.deriveFont(curFont.getSize() * 2F);
-
-			g2.setFont(newFont);
 		    
 			g2.setColor(Color.white);
 		    
 
-
-			if(score>625) {
-		    	g2.fillRect(plane3X, plane3Y, plane3Width, plane3Height);
-		    	
-		    }
 		    // Draw the background image.
 			
 		    g2.drawImage(backgroundImage, 0, 0, this);
@@ -136,13 +129,6 @@ public class GamePanel extends JPanel implements Runnable {
 			super.paintComponent(g);
 			
 		    Graphics2D g2 = (Graphics2D)g;
-			/*
-			Font curFont = g2.getFont();
-			Font newFont = curFont.deriveFont(curFont.getSize() * 3F);
-			g2.setColor(Color.white);
-			g2.setFont(newFont);
-			g2.drawString("Press Enter to Start", (int)centerWidth, (int)centerHeight);
-			*/
 		    g2.setColor(Color.black);
 		    g2.drawImage(backgroundImage, 0, 0, this);
 		}
@@ -312,24 +298,32 @@ public class GamePanel extends JPanel implements Runnable {
 
 			if(counter % 90 == 0 && gameIsOver == false){
 				score += 20;
+				Main.scoreLabel.setText(Integer.toString(score));
 			}
 
 			else if(gameIsOver == true && birdY > maxHeight + 50) {
 				isOnTitleScreen = true;
+				Main.scorePanel.setVisible(false);
+			}
+			if(score%750==0 && score!=0){
+				plane1Speed +=4;
+				plane2Speed +=2;
+				plane3Speed +=2;
 			}
 		}
 		
 		else if(isOnTitleScreen) {
 			if(keyH.enterPressed == true) {
 				isOnTitleScreen = false;
+				Main.scorePanel.setVisible(true);
 				gameIsOver = false;
 				score = 0;
 				birdX = 100;
 				birdY = 100;
 				birdJump = 25;
 				
-				originalPlane1X = (int) (maxWidth-25);
-				plane1X = (int) (maxWidth+75);
+				originalPlane1X = (int) (maxWidth+90);
+				plane1X = (int) (maxWidth+90);
 				plane1Y = rand;
 				plane1Speed = 10;
 				plane1Height = 100;
@@ -339,15 +333,15 @@ public class GamePanel extends JPanel implements Runnable {
 				centerWidth = maxWidth/2;
 				centerHeight = maxHeight/3;
 
-				originalPlane2X = (int) (maxWidth-25);
-				plane2X = (int) (maxWidth+75);
+				originalPlane2X = (int) (maxWidth+125);
+				plane2X = (int) (maxWidth+125);
 				plane2Y = rand2;
 				plane2Speed = 18;
 				plane2Height = 135;
 				plane2Width = 250;
 				
-				originalPlane3X = (int) (maxWidth-25);
-				plane3X = (int) (maxWidth+75);
+				originalPlane3X = (int) (maxWidth+150);
+				plane3X = (int) (maxWidth+150);
 				plane3Y = rand3;
 				plane3Speed = 25;
 				plane3Height = 110;
