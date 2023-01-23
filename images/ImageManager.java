@@ -14,7 +14,7 @@ public class ImageManager {
     Image[] cropDuster;
     Image[] Plane;
     Image[] fighterJet;
-
+    public static Image[] titleScreen;
     
     public static int rand;
     
@@ -27,6 +27,7 @@ public class ImageManager {
         cropDuster = new Image[5];
         Plane = new Image[1];
         fighterJet = new Image[1];
+        titleScreen = new Image[1];
         Random randNum = new Random();
         rand = randNum.nextInt(cropDuster.length);
 
@@ -63,6 +64,9 @@ public class ImageManager {
 
                 fighterJet[0] = new Image();
                 fighterJet[0].image = ImageIO.read(getClass().getResourceAsStream("/main/fighterJet.png"));
+
+                titleScreen[0] = new Image();
+                titleScreen[0].image = ImageIO.read(getClass().getResourceAsStream("/main/start_screen.png"));
 
 
 

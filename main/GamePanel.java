@@ -1,17 +1,23 @@
 package main;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.awt.Toolkit;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.file.Files;
 import java.util.Random;
+import java.util.Scanner;
 
 import javax.imageio.ImageIO;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -28,15 +34,15 @@ public class GamePanel extends JPanel implements Runnable {
 	public final int tileSize = originalTileSize * scale; //48x48
 	final int maxScreenCol = 22;
 	final int maxScreenRow = 28; //16x14
-	final int screenWidth = tileSize * maxScreenRow; // (48x14)px
-	final int screenHeight = tileSize * maxScreenCol; // (48x16)px
+	public final int screenWidth = tileSize * maxScreenRow; // (48x14)px
+	public final int screenHeight = tileSize * maxScreenCol; // (48x16)px
 	
 	private Image backgroundImage;
 	BufferedImage myBackgroundImg;
 	
 	int FPS = 60;
 	
-	ImageManager tileM = new ImageManager(this);
+	ImageManager imageM = new ImageManager(this);
 	KeyHandler keyH = new KeyHandler();
 	Thread gameThread;
 	Random randNum = new Random();
@@ -50,6 +56,7 @@ public class GamePanel extends JPanel implements Runnable {
 	int rand2 = randNum.nextInt((int) (maxHeight-500));
 	int rand3 = randNum.nextInt((int) (maxHeight-500));
 	
+	public int highscore = 0;
 	public int score = 0;
 	public int birdX = 100;
 	public int birdY = 100;
@@ -86,13 +93,9 @@ public class GamePanel extends JPanel implements Runnable {
 	public boolean plane1InScreen = false;
 	boolean birdPlaneCollision;
 	public boolean gameIsOver = false;
-	boolean isOnTitleScreen = true;
+	public static boolean isOnTitleScreen = true;
 	public boolean firstAnim = true;
-	boolean dayTime = true;
-	boolean isPowerUpIn = false;
 
-
-	
 	
 	
 	public GamePanel(){
@@ -113,9 +116,9 @@ public class GamePanel extends JPanel implements Runnable {
 		    Graphics2D g2 = (Graphics2D)g;
 			g2.drawImage(myBackgroundImg, 0, 0, (int)(maxWidth), (int)(maxHeight), this);
 			
-			tileM.draw(g2);
+			imageM.draw(g2);
 		    
-			g2.setColor(Color.white);
+
 		    
 
 		    // Draw the background image.
@@ -127,9 +130,15 @@ public class GamePanel extends JPanel implements Runnable {
 		}
 		else if(isOnTitleScreen) {
 			super.paintComponent(g);
-			
-		    Graphics2D g2 = (Graphics2D)g;
-		    g2.setColor(Color.black);
+			Graphics2D g2 = (Graphics2D)g;
+
+			screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+			maxWidth = screenSize.getWidth();
+			maxHeight = screenSize.getHeight();
+			Main.scoreLabel.setText("High Score: " + Integer.toString(highscore));
+
+			g2.drawImage(images.ImageManager.titleScreen[0].image, 0, 0, screenWidth, screenHeight, null);
+
 		    g2.drawImage(backgroundImage, 0, 0, this);
 		}
 	  }
@@ -168,7 +177,6 @@ public class GamePanel extends JPanel implements Runnable {
 				nextDrawTime += Interval;
 				
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
@@ -256,9 +264,6 @@ public class GamePanel extends JPanel implements Runnable {
 			if(score>625){
 				plane3X -= plane3Speed;
 			}
-			if(score%100==0 && score!=0){
-				isPowerUpIn = true;
-			}
 
 
 
@@ -299,11 +304,46 @@ public class GamePanel extends JPanel implements Runnable {
 			if(counter % 90 == 0 && gameIsOver == false){
 				score += 20;
 				Main.scoreLabel.setText(Integer.toString(score));
+
 			}
 
 			else if(gameIsOver == true && birdY > maxHeight + 50) {
-				isOnTitleScreen = true;
-				Main.scorePanel.setVisible(false);
+				
+				Scanner sc;
+				try {
+					sc = new Scanner(new File("main/highscore.txt"));
+					
+					StringBuffer buffer = new StringBuffer();
+
+					while (sc.hasNextLine()) {
+						buffer.append(sc.nextLine());
+					}
+					String fileContents = buffer.toString();
+					System.out.println(fileContents);
+					if(Integer.valueOf(fileContents) < score){
+						System.out.println("Passed if");
+						fileContents = fileContents.replaceAll(fileContents, ""+score);
+						try {
+							
+							FileWriter myWriter = new FileWriter("main/highscore.txt");
+							myWriter.write(Integer.toString(score));
+							highscore = score;
+							myWriter.close();
+							System.out.println("Successfully wrote to the file.");
+						} catch (IOException e) {
+							System.out.println("An error occurred.");
+							e.printStackTrace();
+							}
+					}
+
+
+					sc.close();
+					
+					isOnTitleScreen = true;
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}
+				
 			}
 			if(score%750==0 && score!=0){
 				plane1Speed +=4;
@@ -318,6 +358,7 @@ public class GamePanel extends JPanel implements Runnable {
 				Main.scorePanel.setVisible(true);
 				gameIsOver = false;
 				score = 0;
+				Main.scoreLabel.setText(Integer.toString(score));
 				birdX = 100;
 				birdY = 100;
 				birdJump = 25;
@@ -348,11 +389,13 @@ public class GamePanel extends JPanel implements Runnable {
 				plane3Width = 140;
 
 				counter = 0;
+			
 
+				
 			}
 		}
 		counter+=1;
-		
+
 		
 	}
 
